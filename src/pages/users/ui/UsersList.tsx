@@ -1,11 +1,15 @@
+import { use } from "react";
 import { TUser } from "../../../shared/api";
 import { UserCard } from "./UserCard";
 
 type TUsersListProps = {
-  users: TUser[];
+  usersPromise: Promise<TUser[]>;
 }
 
-export const UsersList = ({ users }: TUsersListProps) => {
+export const UsersList = ({ usersPromise }: TUsersListProps) => {
+
+  const users = use(usersPromise);
+
   return (
     <div className="flex flex-col">
       {
@@ -16,3 +20,4 @@ export const UsersList = ({ users }: TUsersListProps) => {
     </div>
   );
 }
+
