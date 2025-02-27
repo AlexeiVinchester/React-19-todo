@@ -14,12 +14,8 @@ export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
     e.preventDefault();
     startTransition(async () => {
       await createUser({ email, id: crypto.randomUUID() });
-
-      startTransition(() => {
-        refetchUsers();
-        setEmail("");
-      })
-
+      refetchUsers();
+      setEmail("");
     });
   };
 

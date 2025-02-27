@@ -4,9 +4,10 @@ import { UserCard } from "./UserCard";
 
 type TUsersListProps = {
   usersPromise: Promise<TUser[]>;
+  refetchUsers: () => void;
 }
 
-export const UsersList = ({ usersPromise }: TUsersListProps) => {
+export const UsersList = ({ usersPromise, refetchUsers }: TUsersListProps) => {
 
   const users = use(usersPromise);
 
@@ -14,7 +15,7 @@ export const UsersList = ({ usersPromise }: TUsersListProps) => {
     <div className="flex flex-col">
       {
         users.map((user) => (
-          <UserCard key={user.id} user={user} />
+          <UserCard key={user.id} user={user} refetchUsers={refetchUsers}/>
         ))
       }
     </div>
