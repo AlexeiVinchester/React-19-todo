@@ -1,4 +1,4 @@
-import { createUser } from "../../../shared/api";
+import { createUser, deleteUser } from "../../../shared/api";
 
 type TCreateUserActionState = {
   error?: string;
@@ -11,9 +11,9 @@ type TCreateUserAction = {
 
 export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
   return async (
-    prevState: TCreateUserActionState,
+    _: TCreateUserActionState,
     formdata: FormData
-  ) => {
+  ): Promise<TCreateUserActionState> => {
     const email = formdata.get('email') as string;
 
     if (email === 'admin@gmail.com') {
@@ -40,4 +40,30 @@ export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
     }
   }
 }
+
+type TDeleteUserActionState = {
+  error?: string;
+};
+
+type TDeleteUserAction = {
+  refetchUsers: () => void;
+  userId: string;
+};
+
+export const deleteUserAction = ({ refetchUsers, userId }: TDeleteUserAction) => {
+  return async (): Promise<TDeleteUserActionState> => {
+    try {
+      await deleteUser(userId);
+
+      refetchUsers();
+
+      return {};
+    } catch {
+      return { error: 'Error while deleting of user!' }
+    }
+  };
+};
+
+
+
 
