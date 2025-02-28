@@ -1,5 +1,5 @@
-import { useState, useTransition } from "react";
-import { createUser } from "../../../shared/api";
+import { startTransition, useActionState, useState } from "react";
+import { createUserAction } from "../api/actions";
 
 type TCreateUserFormProps = {
   refetchUsers: () => void;
@@ -8,14 +8,15 @@ type TCreateUserFormProps = {
 export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
   const [email, setEmail] = useState('');
 
-  const [isPending, startTransition] = useTransition();
+  const [state, dispatch, isPending] = useActionState(
+    createUserAction({ refetchUsers, setEmail }),
+    {}
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(async () => {
-      await createUser({ email, id: crypto.randomUUID() });
-      refetchUsers();
-      setEmail("");
+      dispatch({ email })
     });
   };
 
@@ -35,6 +36,7 @@ export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
       >
         Add
       </button>
+      {state.error && <div className="text-red-500">{state.error}</div>}
     </form>
   );
 }
