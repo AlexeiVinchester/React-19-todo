@@ -1,4 +1,4 @@
-import { startTransition, useActionState, useState } from "react";
+import { useActionState } from "react";
 import { createUserAction } from "../api/actions";
 
 type TCreateUserFormProps = {
@@ -6,28 +6,18 @@ type TCreateUserFormProps = {
 }
 
 export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
-  const [email, setEmail] = useState('');
-
   const [state, dispatch, isPending] = useActionState(
-    createUserAction({ refetchUsers, setEmail }),
+    createUserAction({ refetchUsers }),
     {}
   );
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    startTransition(async () => {
-      dispatch({ email })
-    });
-  };
-
   return (
-    <form className="flex gap-2" onSubmit={handleSubmit}>
+    <form className="flex gap-2" action={dispatch}>
       <input
         type="email"
+        name="email"
         className="border p-2 m-2 rounded disabled:bg-gray-400"
         disabled={isPending}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
       />
       <button
         type="submit"

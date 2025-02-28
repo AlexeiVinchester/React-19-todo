@@ -6,24 +6,28 @@ type TCreateUserActionState = {
 
 type TCreateUserAction = {
   refetchUsers: () => void;
-  setEmail: (email: string) => void;
 };
 
-export const createUserAction = ({ refetchUsers, setEmail }: TCreateUserAction) => {
+export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
   return async (
     prevState: TCreateUserActionState,
-    formdata: { email: string }
+    formdata: FormData
   ) => {
+    const email = formdata.get('email') as string;
+
+    if(email === 'admin@gmail.com') {
+      return {error: 'Admin email is not allowed!'}
+    }
+
     try {
       await createUser({
-        email: formdata.email,
+        email,
         id: crypto.randomUUID()
       });
 
       refetchUsers();
-      setEmail(formdata.email)
 
-      return {}
+      return {};
     } catch {
       return { error: 'Error while creating new user!' }
     }

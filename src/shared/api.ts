@@ -11,7 +11,6 @@ export const fetchUsers = async () => {
 };
 
 export const createUser = async (user: TUser) => {
-  throw new Error('Yoooops')
   const response = await fetch('http://localhost:3001/users', {
     method: 'POST',
     headers: {
