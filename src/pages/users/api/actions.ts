@@ -2,6 +2,7 @@ import { createUser } from "../../../shared/api";
 
 type TCreateUserActionState = {
   error?: string;
+  email: string;
 };
 
 type TCreateUserAction = {
@@ -15,8 +16,11 @@ export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
   ) => {
     const email = formdata.get('email') as string;
 
-    if(email === 'admin@gmail.com') {
-      return {error: 'Admin email is not allowed!'}
+    if (email === 'admin@gmail.com') {
+      return {
+        error: 'Admin email is not allowed!',
+        email
+      };
     }
 
     try {
@@ -27,9 +31,12 @@ export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
 
       refetchUsers();
 
-      return {};
+      return { email: '' };
     } catch {
-      return { error: 'Error while creating new user!' }
+      return {
+        error: 'Error while creating new user!',
+        email
+      }
     }
   }
 }

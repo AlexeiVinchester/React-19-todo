@@ -8,7 +8,7 @@ type TCreateUserFormProps = {
 export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
   const [state, dispatch, isPending] = useActionState(
     createUserAction({ refetchUsers }),
-    {}
+    { email: '' }
   );
 
   return (
