@@ -1,13 +1,14 @@
 import { use } from "react";
 import { TUser } from "../../../shared/api";
 import { UserCard } from "./UserCard";
+import { TDeleteUserAction } from "../api/actions";
 
 type TUsersListProps = {
   usersPromise: Promise<TUser[]>;
-  refetchUsers: () => void;
+  deleteUserAction: TDeleteUserAction
 }
 
-export const UsersList = ({ usersPromise, refetchUsers }: TUsersListProps) => {
+export const UsersList = ({ usersPromise, deleteUserAction }: TUsersListProps) => {
 
   const users = use(usersPromise);
 
@@ -15,7 +16,7 @@ export const UsersList = ({ usersPromise, refetchUsers }: TUsersListProps) => {
     <div className="flex flex-col">
       {
         users.map((user) => (
-          <UserCard key={user.id} user={user} refetchUsers={refetchUsers}/>
+          <UserCard key={user.id} user={user} deleteUserAction={deleteUserAction} />
         ))
       }
     </div>

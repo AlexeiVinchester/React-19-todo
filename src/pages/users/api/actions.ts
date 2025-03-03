@@ -5,15 +5,17 @@ type TCreateUserActionState = {
   email: string;
 };
 
-type TCreateUserAction = {
+type TCreateUserActionWrapperParams = {
   refetchUsers: () => void;
 };
 
-export const createUserAction = ({ refetchUsers }: TCreateUserAction) => {
-  return async (
-    _: TCreateUserActionState,
-    formdata: FormData
-  ): Promise<TCreateUserActionState> => {
+export type TCreateUserAction = (
+  _: TCreateUserActionState,
+  formdata: FormData
+) => Promise<TCreateUserActionState>;
+
+export const createUserAction = ({ refetchUsers }: TCreateUserActionWrapperParams): TCreateUserAction => {
+  return async (_, formdata) => {
     const email = formdata.get('email') as string;
 
     if (email === 'admin@gmail.com') {
@@ -45,14 +47,19 @@ type TDeleteUserActionState = {
   error?: string;
 };
 
-type TDeleteUserAction = {
+type TDeleteUserActionParams = {
   refetchUsers: () => void;
-  userId: string;
 };
 
-export const deleteUserAction = ({ refetchUsers, userId }: TDeleteUserAction) => {
-  return async (): Promise<TDeleteUserActionState> => {
+export type TDeleteUserAction = (
+  _: TDeleteUserActionState,
+  formdata: FormData
+) => Promise<TDeleteUserActionState>
+
+export const deleteUserAction = ({ refetchUsers }: TDeleteUserActionParams): TDeleteUserAction => {
+  return async (_, formdata) => {
     try {
+      const userId = formdata.get('userId') as string;
       await deleteUser(userId);
 
       refetchUsers();

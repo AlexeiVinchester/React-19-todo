@@ -1,13 +1,13 @@
 import { useActionState } from "react";
-import { createUserAction } from "../api/actions";
+import { TCreateUserAction } from "../api/actions";
 
 type TCreateUserFormProps = {
-  refetchUsers: () => void;
+  createUserAction: TCreateUserAction
 }
 
-export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
+export const CreateUserForm = ({ createUserAction }: TCreateUserFormProps) => {
   const [state, dispatch, isPending] = useActionState(
-    createUserAction({ refetchUsers }),
+    createUserAction,
     { email: '' }
   );
 

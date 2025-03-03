@@ -1,16 +1,16 @@
 import { useActionState } from "react";
 import { TUser } from "../../../shared/api";
-import { deleteUserAction } from "../api/actions";
+import { TDeleteUserAction } from "../api/actions";
 
 type TUserCardProps = {
   user: TUser;
-  refetchUsers: () => void;
+  deleteUserAction: TDeleteUserAction
 }
 
-export const UserCard = ({ user, refetchUsers }: TUserCardProps) => {
+export const UserCard = ({ user, deleteUserAction }: TUserCardProps) => {
 
   const [state, dispatch, isPending] = useActionState(
-    deleteUserAction({ refetchUsers, userId: user.id }),
+    deleteUserAction,
     {}
   );
 
@@ -20,6 +20,7 @@ export const UserCard = ({ user, refetchUsers }: TUserCardProps) => {
     >
       {user.email}
       <form className="ml-auto">
+        <input type="text" name="userId" hidden value={user.id} />
         <button
           className="m-2 bg-blue-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
           disabled={isPending}
