@@ -1,14 +1,12 @@
-import { startTransition, Suspense, useState } from "react";
-import { fetchUsers } from "../../../shared/api";
+import { Suspense } from "react";
 import { CreateUserForm } from "./CreateUserForm";
 import { UsersList } from "./UsersList";
 import { ErrorBoundary } from "react-error-boundary";
+import { useUsers } from "../lib/useUsers";
 
-const defaultUsersPromise = fetchUsers();
 
 export const UsersPage = () => {
-  const [usersPromise, setUsersPromise] = useState(defaultUsersPromise);
-  const refetchUsers = () => startTransition(() => setUsersPromise(fetchUsers()));
+  const { usersPromise, refetchUsers } = useUsers()
 
   return (
     <main className="container mx-auto p-4 pt-10 flex flex-col gap-4">

@@ -18,6 +18,7 @@ export const CreateUserForm = ({ refetchUsers }: TCreateUserFormProps) => {
         name="email"
         className="border p-2 m-2 rounded disabled:bg-gray-400"
         disabled={isPending}
+        defaultValue={state.email}
       />
       <button
         type="submit"
