@@ -1,16 +1,14 @@
-import { use } from "react";
 import { TUser } from "../../../shared/api";
 import { UserCard } from "./UserCard";
 import { TDeleteUserAction } from "../api/actions";
 
 type TUsersListProps = {
-  usersPromise: Promise<TUser[]>;
-  deleteUserAction: TDeleteUserAction
+  deleteUserAction: TDeleteUserAction,
+  useUsersList: () => TUser[]
 }
 
-export const UsersList = ({ usersPromise, deleteUserAction }: TUsersListProps) => {
-
-  const users = use(usersPromise);
+export const UsersList = ({ useUsersList, deleteUserAction }: TUsersListProps) => {
+  const users = useUsersList();
 
   return (
     <div className="flex flex-col">

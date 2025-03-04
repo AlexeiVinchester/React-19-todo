@@ -1,4 +1,4 @@
-import { createUser, deleteUser } from "../../../shared/api";
+import { createUser, deleteUser, TUser } from "../../../shared/api";
 
 type TCreateUserActionState = {
   error?: string;
@@ -7,6 +7,7 @@ type TCreateUserActionState = {
 
 type TCreateUserActionWrapperParams = {
   refetchUsers: () => void;
+  createOptimisticUser: (user: TUser) => void;
 };
 
 export type TCreateUserAction = (
@@ -14,7 +15,7 @@ export type TCreateUserAction = (
   formdata: FormData
 ) => Promise<TCreateUserActionState>;
 
-export const createUserAction = ({ refetchUsers }: TCreateUserActionWrapperParams): TCreateUserAction => {
+export const createUserAction = ({ refetchUsers, createOptimisticUser }: TCreateUserActionWrapperParams): TCreateUserAction => {
   return async (_, formdata) => {
     const email = formdata.get('email') as string;
 
@@ -26,10 +27,9 @@ export const createUserAction = ({ refetchUsers }: TCreateUserActionWrapperParam
     }
 
     try {
-      await createUser({
-        email,
-        id: crypto.randomUUID()
-      });
+      const user = { email, id: crypto.randomUUID() };
+      createOptimisticUser(user);
+      await createUser(user);
 
       refetchUsers();
 
@@ -49,6 +49,7 @@ type TDeleteUserActionState = {
 
 type TDeleteUserActionParams = {
   refetchUsers: () => void;
+  deleteOptimisticUser: (userId: string) => void;
 };
 
 export type TDeleteUserAction = (
@@ -56,10 +57,11 @@ export type TDeleteUserAction = (
   formdata: FormData
 ) => Promise<TDeleteUserActionState>
 
-export const deleteUserAction = ({ refetchUsers }: TDeleteUserActionParams): TDeleteUserAction => {
+export const deleteUserAction = ({ refetchUsers, deleteOptimisticUser }: TDeleteUserActionParams): TDeleteUserAction => {
   return async (_, formdata) => {
     try {
       const userId = formdata.get('userId') as string;
+      deleteOptimisticUser(userId);
       await deleteUser(userId);
 
       refetchUsers();

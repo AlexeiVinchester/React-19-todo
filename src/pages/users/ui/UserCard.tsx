@@ -20,7 +20,7 @@ export const UserCard = ({ user, deleteUserAction }: TUserCardProps) => {
     >
       {user.email}
       <form className="ml-auto">
-        <input type="text" name="userId" hidden value={user.id} />
+        <input type="text" name="userId" hidden value={user.id} readOnly/>
         <button
           className="m-2 bg-blue-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
           disabled={isPending}
