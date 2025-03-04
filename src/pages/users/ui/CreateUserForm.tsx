@@ -1,4 +1,4 @@
-import { useActionState } from "react";
+import { useActionState, useOptimistic, useRef } from "react";
 import { TCreateUserAction } from "../api/actions";
 
 type TCreateUserFormProps = {
@@ -11,14 +11,24 @@ export const CreateUserForm = ({ createUserAction }: TCreateUserFormProps) => {
     { email: '' }
   );
 
+  const [optimisticState, setOptimisticState] = useOptimistic(state)
+
+  const formRef = useRef<HTMLFormElement>(null)
+
+  const formAction = (formData: FormData) => {
+    setOptimisticState({email: ''})
+    dispatch(formData);
+    formRef.current?.reset();
+  }
+
   return (
-    <form className="flex gap-2" action={dispatch}>
+    <form className="flex gap-2" action={formAction} ref={formRef}>
       <input
         type="email"
         name="email"
         className="border p-2 m-2 rounded disabled:bg-gray-400"
         disabled={isPending}
-        defaultValue={state.email}
+        defaultValue={optimisticState.email}
       />
       <button
         type="submit"
@@ -27,7 +37,7 @@ export const CreateUserForm = ({ createUserAction }: TCreateUserFormProps) => {
       >
         Add
       </button>
-      {state.error && <div className="text-red-500">{state.error}</div>}
+      {optimisticState.error && <div className="text-red-500">{optimisticState.error}</div>}
     </form>
   );
 }
