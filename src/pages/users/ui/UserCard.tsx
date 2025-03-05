@@ -1,6 +1,6 @@
 import { useActionState } from "react";
-import { TUser } from "../../../shared/api";
-import { TDeleteUserAction } from "../api/actions";
+import { TUser } from "../../../shared/usersApi";
+import { TDeleteUserAction } from "../model/actions";
 
 type TUserCardProps = {
   user: TUser;

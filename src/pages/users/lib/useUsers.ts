@@ -1,6 +1,6 @@
 import { useState, startTransition, useOptimistic, use } from "react";
-import { fetchUsers, TUser } from "../../../shared/api";
-import { createUserAction, deleteUserAction } from "../api/actions";
+import { fetchUsers, TUser } from "../../../shared/usersApi";
+import { createUserAction, deleteUserAction } from "../model/actions";
 
 const defaultUsersPromise = fetchUsers();
 

@@ -1,4 +1,4 @@
-import { createUser, deleteUser, TUser } from "../../../shared/api";
+import { createUser, deleteUser, TUser } from "../../../shared/usersApi";
 
 type TCreateUserActionState = {
   error?: string;

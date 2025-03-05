@@ -1,2 +1,1 @@
-export { TodoList } from "./page";
-
+export { TasksPage } from '../todo-list/ui/page'

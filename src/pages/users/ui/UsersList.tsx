@@ -1,6 +1,6 @@
-import { TUser } from "../../../shared/api";
+import { TUser } from "../../../shared/usersApi";
 import { UserCard } from "./UserCard";
-import { TDeleteUserAction } from "../api/actions";
+import { TDeleteUserAction } from "../model/actions";
 
 type TUsersListProps = {
   deleteUserAction: TDeleteUserAction,
