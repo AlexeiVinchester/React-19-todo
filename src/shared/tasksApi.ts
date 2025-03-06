@@ -12,7 +12,6 @@ export type TPaginatedResponse<T> = {
   items: number;
   last: number;
   next: number | null;
-  page: number;
   pages: number;
   prev: number | null;
 }
@@ -43,7 +42,7 @@ export const fetchTasks = async (
   );
 
   const data: TPaginatedResponse<TTask> = await response.json()
-  return { ...data, page }
+  return data;
 }
 
 export const createTask = async (task: Omit<TTask, 'id' | 'createdAt'>) => {

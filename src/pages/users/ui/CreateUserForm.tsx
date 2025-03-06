@@ -1,5 +1,5 @@
 import { useActionState, useOptimistic, useRef } from "react";
-import { TCreateUserAction } from "../model/actions";
+import { TCreateUserAction } from "../lib/actions";
 
 type TCreateUserFormProps = {
   createUserAction: TCreateUserAction

@@ -1,8 +1,14 @@
+import { use } from "react";
 import { TTask } from "../../../shared/tasksApi";
 import { TaskCard } from "./TaskCard";
 
-export const TasksList = () => {
-  const tasks: TTask[] = []
+type TTasksListProps = {
+  tasksPromise: Promise<TTask[]>
+}
+
+export const TasksList = ({tasksPromise}: TTasksListProps) => {
+
+  const tasks = use(tasksPromise)
   return (
     <div className="flex flex-col">
       {
