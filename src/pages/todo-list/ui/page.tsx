@@ -27,7 +27,7 @@ export const TodolistPage = () => {
       <CreateTaskForm refetchTasks={refetchTasks} userId={userId} />
       <ErrorBoundary fallbackRender={(e) => <div className="text-red-500">Something goes wrong! {JSON.stringify(e)}</div>}>
         <Suspense fallback={<p>Loading...</p>}>
-          <TasksList tasksPromise={tasksPromise} refetchTasks={refetchTasks} />
+          <TasksList tasksPromise={tasksPromise} refetchTasks={refetchTasks}/>
         </Suspense>
       </ErrorBoundary>
     </main>
