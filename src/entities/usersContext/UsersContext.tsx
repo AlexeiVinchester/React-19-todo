@@ -1,6 +1,6 @@
 import { ReactNode, startTransition, useState } from "react";
-import { fetchUsers } from "../../../shared/usersApi";
-import { UsersContext } from "../model/usersContext";
+import { fetchUsers } from "../../shared/usersApi";
+import { UsersContext } from "./usersContext";
 
 type TUsersProviderProps = {
   children: ReactNode;

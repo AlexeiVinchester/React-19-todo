@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { TUser } from "../../../shared/usersApi";
+import { TUser } from "../../shared/usersApi";
 
 type TUsersContext = {
   usersPromise: Promise<TUser[]>;

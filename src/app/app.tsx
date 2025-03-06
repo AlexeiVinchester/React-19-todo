@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router"
 import { UsersPage } from "../pages/users"
 import { TodolistPage } from "../pages/todo-list"
-import { UsersProvider } from "../pages/users/ui/UsersContext"
+import { UsersProvider } from "../entities/usersContext/UsersContext"
 
 export const App = () => {
   return (

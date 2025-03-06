@@ -1,5 +1,5 @@
 import { use } from "react";
-import { UsersContext } from "../model/usersContext";
+import { UsersContext } from "./usersContext";
 
 export const useUsersGlobal = () => {
   const context = use(UsersContext);

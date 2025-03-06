@@ -1,7 +1,7 @@
 import { useOptimistic, use } from "react";
 import { TUser } from "../../../shared/usersApi";
 import { createUserAction, deleteUserAction } from "./actions";
-import { useUsersGlobal } from "./useUsersGlobal";
+import { useUsersGlobal } from "../../../entities/usersContext/useUsersGlobal";
 
 export const useUsers = () => {
   const { usersPromise, refetchUsers } = useUsersGlobal();
