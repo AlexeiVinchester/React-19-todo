@@ -1,14 +1,11 @@
-import { useState, startTransition, useOptimistic, use } from "react";
-import { fetchUsers, TUser } from "../../../shared/usersApi";
+import { useOptimistic, use } from "react";
+import { TUser } from "../../../shared/usersApi";
 import { createUserAction, deleteUserAction } from "./actions";
-
-const defaultUsersPromise = fetchUsers();
+import { useUsersGlobal } from "./useUsersGlobal";
 
 export const useUsers = () => {
-  const [usersPromise, setUsersPromise] = useState(defaultUsersPromise);
-  const refetchUsers = () => {
-    startTransition(() => setUsersPromise(fetchUsers()));
-  }
+  const { usersPromise, refetchUsers } = useUsersGlobal();
+
   const [createdUsers, createOptimisticUser] = useOptimistic(
     [] as TUser[],
     (prevState, user: TUser) => [...prevState, user]
@@ -21,7 +18,7 @@ export const useUsers = () => {
 
   const useUsersList = () => {
     const users = use(usersPromise);
-    
+
     return users.concat(createdUsers).filter(user => !deletedUsersIds.includes(user.id))
   }
 

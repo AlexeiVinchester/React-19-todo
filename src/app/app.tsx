@@ -11,6 +11,5 @@ export const App = () => {
         <Route path="/:userId/tasks" element={<TodolistPage />}></Route>
       </Routes>
     </UsersProvider>
-
-  )
-}
+  );
+};
