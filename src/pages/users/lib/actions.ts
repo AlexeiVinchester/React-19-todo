@@ -1,3 +1,4 @@
+import { TAction } from "../../../shared/types";
 import { createUser, deleteUser, TUser } from "../../../shared/usersApi";
 
 type TCreateUserActionState = {
@@ -10,10 +11,7 @@ type TCreateUserActionWrapperParams = {
   createOptimisticUser: (user: TUser) => void;
 };
 
-export type TCreateUserAction = (
-  _: TCreateUserActionState,
-  formdata: FormData
-) => Promise<TCreateUserActionState>;
+export type TCreateUserAction = TAction<TCreateUserActionState>;
 
 export const createUserAction = ({ refetchUsers, createOptimisticUser }: TCreateUserActionWrapperParams): TCreateUserAction => {
   return async (_, formdata) => {
@@ -52,10 +50,7 @@ type TDeleteUserActionParams = {
   deleteOptimisticUser: (userId: string) => void;
 };
 
-export type TDeleteUserAction = (
-  _: TDeleteUserActionState,
-  formdata: FormData
-) => Promise<TDeleteUserActionState>
+export type TDeleteUserAction = TAction<TDeleteUserActionState>;
 
 export const deleteUserAction = ({ refetchUsers, deleteOptimisticUser }: TDeleteUserActionParams): TDeleteUserAction => {
   return async (_, formdata) => {

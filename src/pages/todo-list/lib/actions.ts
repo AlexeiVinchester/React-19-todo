@@ -1,21 +1,21 @@
-import { createTask, TTask } from "../../../shared/tasksApi";
+import { createTask, deleteTask, TTask } from "../../../shared/tasksApi";
+import { TAction } from "../../../shared/types";
 
-export type TCreateTaskState = {
+type TCreateTaskState = {
   title: string;
   error?: string;
 };
 
-export type TCreateTaskActionWrapperParams = {
+type TCreateTaskActionWrapperParams = {
   refetchTasks: () => void;
   userId: string;
 };
 
-export type TCreateTaskAction = (
-  prevState: TCreateTaskState,
-  formData: FormData
-) => Promise<TCreateTaskState>;
+export type TCreateTaskAction = TAction<TCreateTaskState>;
 
-export const createTaskActionWrapper = ({ refetchTasks, userId }: TCreateTaskActionWrapperParams): TCreateTaskAction => {
+export const createTaskActionWrapper = (
+  { refetchTasks, userId }: TCreateTaskActionWrapperParams
+): TCreateTaskAction => {
   return async (_, formData) => {
     const title = formData.get('title') as string;
     const task: TTask = {
@@ -39,6 +39,32 @@ export const createTaskActionWrapper = ({ refetchTasks, userId }: TCreateTaskAct
         title,
         error: 'Something went wrong while creating new task!'
       };
+    }
+  };
+};
+
+type TDeleteActionState = {
+  error?: string;
+};
+
+type TDeleteActionWrapperParams = {
+  refetchTasks: () => void;
+};
+
+export type TDeleteAction = TAction<TDeleteActionState>;
+
+export const deketeTaskActionWrapper = (
+  { refetchTasks }: TDeleteActionWrapperParams
+): TDeleteAction => {
+  return async (_, formData) => {
+    const id = formData.get('taskId') as string;
+    try {
+      await deleteTask(id);
+      refetchTasks();
+
+      return {};
+    } catch {
+      return { error: 'Something went wrong while deletion of task!' }
     }
   };
 };
