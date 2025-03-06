@@ -13,13 +13,6 @@
       "title": "task 2",
       "done": false,
       "createdAt": 1741260839504
-    },
-    {
-      "id": "878070a3-cce6-4bb2-8afe-f8c8f685e60b",
-      "userId": "d18b5fb7-bca0-45e9-a7ba-17a716cfa0e2",
-      "title": "task 3",
-      "done": false,
-      "createdAt": 1741261197860
     }
   ],
   "users": [

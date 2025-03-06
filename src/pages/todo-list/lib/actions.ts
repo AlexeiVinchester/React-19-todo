@@ -53,7 +53,7 @@ type TDeleteActionWrapperParams = {
 
 export type TDeleteAction = TAction<TDeleteActionState>;
 
-export const deketeTaskActionWrapper = (
+export const deleteTaskActionWrapper = (
   { refetchTasks }: TDeleteActionWrapperParams
 ): TDeleteAction => {
   return async (_, formData) => {
