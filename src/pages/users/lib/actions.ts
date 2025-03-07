@@ -1,5 +1,5 @@
-import { TAction } from "../../../shared/types";
-import { createUser, deleteUser, TUser } from "../../../shared/usersApi";
+import { TAction } from "../../../shared/types/types";
+import { createUser, deleteUser, TUser } from "../../../shared/api/usersApi";
 
 type TCreateUserActionState = {
   error?: string;

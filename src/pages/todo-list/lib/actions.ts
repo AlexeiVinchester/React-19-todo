@@ -1,5 +1,5 @@
-import { createTask, deleteTask, TTask } from "../../../shared/tasksApi";
-import { TAction } from "../../../shared/types";
+import { createTask, deleteTask, TTask } from "../../../shared/api/tasksApi";
+import { TAction } from "../../../shared/types/types";
 
 type TCreateTaskState = {
   title: string;

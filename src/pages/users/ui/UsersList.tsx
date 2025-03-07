@@ -1,4 +1,4 @@
-import { TUser } from "../../../shared/usersApi";
+import { TUser } from "../../../shared/api/usersApi";
 import { UserCard } from "./UserCard";
 import { TDeleteUserAction } from "../lib/actions";
 

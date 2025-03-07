@@ -1,5 +1,5 @@
 import { Suspense, useActionState } from "react";
-import { TTask } from "../../../shared/tasksApi";
+import { TTask } from "../../../shared/api/tasksApi";
 import { deleteTaskActionWrapper } from "../lib/actions";
 import { TaskUserPreview } from "./TaskUserPreview";
 

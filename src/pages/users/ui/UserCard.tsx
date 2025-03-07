@@ -1,5 +1,5 @@
 import { useActionState } from "react";
-import { TUser } from "../../../shared/usersApi";
+import { TUser } from "../../../shared/api/usersApi";
 import { TDeleteUserAction } from "../lib/actions";
 import { Link } from "react-router";
 

@@ -1,5 +1,5 @@
 import { use } from "react";
-import { TTask } from "../../../shared/tasksApi";
+import { TTask } from "../../../shared/api/tasksApi";
 import { TaskCard } from "./TaskCard";
 
 type TTasksListProps = {

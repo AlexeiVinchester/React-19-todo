@@ -1,5 +1,5 @@
 import { useOptimistic, use } from "react";
-import { TUser } from "../../../shared/usersApi";
+import { TUser } from "../../../shared/api/usersApi";
 import { createUserAction, deleteUserAction } from "./actions";
 import { useUsersGlobal } from "../../../entities/usersContext/useUsersGlobal";
 
