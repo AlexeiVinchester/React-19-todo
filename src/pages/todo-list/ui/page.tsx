@@ -10,9 +10,18 @@ export const TodolistPage = () => {
   const { userId = '' } = useParams();
 
   const [search, setSearch] = useState('');
+  const [createdAtSort, setCreatedAtSort] = useState<'asc' | 'desc'>('asc');
 
-  const getTasks = async ({ page = 1, title = search }: { page?: number; title?: string }) =>
-    fetchTasks({ filters: { userId, title }, page });
+  const getTasks = async ({
+    page = 1,
+    title = search,
+    createdAt = createdAtSort
+  }: {
+    page?: number;
+    title?: string;
+    createdAt?: 'asc' | 'desc'
+  }) =>
+    fetchTasks({ filters: { userId, title }, page, sort: { createdAt } });
 
   const [paginatedTasksPromise, setPaginatedTasksPromise] = useState(() => getTasks({}));
 
@@ -45,6 +54,12 @@ export const TodolistPage = () => {
     );
   };
 
+  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const createdAt = e.target.value as 'asc' | 'desc';
+    setCreatedAtSort(createdAt);
+    startTransition(() => setPaginatedTasksPromise(getTasks({ createdAt })));
+  };
+
   return (
     <main className="container mx-auto p-4 pt-10 flex flex-col gap-4">
       <h1 className="text-3xl font-bold underline mb-10">{userId}</h1>
@@ -57,6 +72,14 @@ export const TodolistPage = () => {
           value={search}
           onChange={handleChangeSearch}
         />
+        <select
+          onChange={handleChangeSort}
+          value={createdAtSort}
+          className="border rounded"
+        >
+          <option value="asc">Asc</option>
+          <option value="desc">Desc</option>
+        </select>
       </div>
       <ErrorBoundary fallbackRender={(e) => <div className="text-red-500">Something goes wrong! {JSON.stringify(e)}</div>}>
         <Suspense fallback={<p>Loading...</p>}>
