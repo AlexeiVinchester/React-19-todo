@@ -1,4 +1,4 @@
-import { startTransition, Suspense, useMemo, useState } from "react"
+import { startTransition, Suspense, useMemo, useRef, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { CreateTaskForm } from "./CreateTaskForm"
 import { TasksList, } from "./TasksList"
@@ -30,9 +30,19 @@ export const TodolistPage = () => {
     startTransition(() => setPaginatedTasksPromise(getTasks({ page })))
   };
 
+  const debounceTimerRef = useRef<number>(0);
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    startTransition(() => setPaginatedTasksPromise(getTasks({ title: e.target.value })));
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
+    debounceTimerRef.current = setTimeout(
+      () => startTransition(() => setPaginatedTasksPromise(getTasks({ title: e.target.value }))),
+      2000
+    );
   };
 
   return (

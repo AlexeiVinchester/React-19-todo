@@ -2,8 +2,8 @@ import { useActionState, useOptimistic, useRef } from "react";
 import { TCreateUserAction } from "../lib/actions";
 
 type TCreateUserFormProps = {
-  createUserAction: TCreateUserAction
-}
+  createUserAction: TCreateUserAction;
+};
 
 export const CreateUserForm = ({ createUserAction }: TCreateUserFormProps) => {
   const [state, dispatch, isPending] = useActionState(
