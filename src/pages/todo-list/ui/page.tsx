@@ -9,14 +9,16 @@ import { PaginationContainer } from "../../../shared/ui/PaginationContainer"
 export const TodolistPage = () => {
   const { userId = '' } = useParams();
 
-  const [paginatedTasksPromise, setPaginatedTasksPromise] = useState(
-    () => fetchTasks({ filters: { userId } })
-  );
+  const [search, setSearch] = useState('');
+
+  const getTasks = async ({ page = 1, title = search }: { page?: number; title?: string }) =>
+    fetchTasks({ filters: { userId, title }, page });
+
+  const [paginatedTasksPromise, setPaginatedTasksPromise] = useState(() => getTasks({}));
 
   const refetchTasks = async () => {
     const { page } = await paginatedTasksPromise;
-    startTransition(() => setPaginatedTasksPromise(fetchTasks({ filters: { userId }, page })))
-
+    startTransition(() => setPaginatedTasksPromise(getTasks({ page })));
   };
 
   const tasksPromise = useMemo(
@@ -25,14 +27,27 @@ export const TodolistPage = () => {
   );
 
   const handleChangePage = (page: number) => {
-    startTransition(() => setPaginatedTasksPromise(fetchTasks({ filters: { userId }, page })))
+    startTransition(() => setPaginatedTasksPromise(getTasks({ page })))
+  };
 
-  }
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    startTransition(() => setPaginatedTasksPromise(getTasks({ title: e.target.value })));
+  };
 
   return (
     <main className="container mx-auto p-4 pt-10 flex flex-col gap-4">
       <h1 className="text-3xl font-bold underline mb-10">{userId}</h1>
       <CreateTaskForm refetchTasks={refetchTasks} userId={userId} />
+      <div className="flex gap-2">
+        <input
+          className="border p-2 m-2 rounded"
+          placeholder="Search"
+          type="text"
+          value={search}
+          onChange={handleChangeSearch}
+        />
+      </div>
       <ErrorBoundary fallbackRender={(e) => <div className="text-red-500">Something goes wrong! {JSON.stringify(e)}</div>}>
         <Suspense fallback={<p>Loading...</p>}>
           <TasksList
