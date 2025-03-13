@@ -1,14 +1,16 @@
-import { Suspense, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 import { RepeatTasksList } from "./TasksList";
 import { RepeatCreateTaskForm } from "./CreateNewTask";
 import { useRepeatTasks } from "../lib/useTasks";
 import { RepeatPaginationContainer } from "../../../shared/ui/RepeatPaginationContainer";
+import { TSort } from "../../../shared/types/sort";
 
 export const RepeatTasksPage = () => {
   const { userId = "" } = useParams();
   const [search, setSearch] = useState('');
+  const [createdAtSort, setCreatedAtSort] = useState<TSort>('asc');
 
   const {
     useRepeatTasksList,
@@ -17,13 +19,26 @@ export const RepeatTasksPage = () => {
     handleChangePage,
     paginatedTasksPromise,
     refetchTasks
-  } = useRepeatTasks(userId, search);
+  } = useRepeatTasks(userId, search, createdAtSort);
 
+  const debounceRef = useRef<number>(0);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
     setSearch(search);
-    refetchTasks({ title: search })
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      refetchTasks({ title: search })
+    }, 300)
+  };
+
+  const handleChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const createdAt = e.target.value as TSort;
+    setCreatedAtSort(createdAt);
+    refetchTasks({ createdAt })
   };
 
   return (
@@ -38,6 +53,14 @@ export const RepeatTasksPage = () => {
           value={search}
           onChange={handleChangeSearch}
         />
+        <select
+          className="border rounded"
+          onChange={handleChangeSort}
+          value={createdAtSort}
+        >
+          <option value='asc'>Asc</option>
+          <option value='desc'>Desc</option>
+        </select>
       </div>
 
       <ErrorBoundary fallbackRender={(e) => <div className="text-red-500">{JSON.stringify(e)}</div>}>

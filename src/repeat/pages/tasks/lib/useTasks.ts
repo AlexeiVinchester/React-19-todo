@@ -3,20 +3,21 @@ import { repeatFetchTasks } from "../api/api";
 import { repeatCreateTaskActionWrapper } from "./createTask.action";
 import { repeatDeleteTaskActionWrapper } from "./deleteTask.action";
 import { TRepeatTask } from "../model/task.type";
+import { TSort } from "../../../shared/types/sort";
 
-export const useRepeatTasks = (userId: string, search: string) => {
+export const useRepeatTasks = (userId: string, search: string, createdAtSort: TSort) => {
   const [paginatedTasksPromise, setPaginatedTasksPromise] = useState(() => repeatFetchTasks({
-    filters: { userId, title: search},
+    filters: { userId, title: search }, sort: { createdAt: createdAtSort },
   }));
 
   const refetchTasks = async ({
     page,
     title = search,
-    createdAt = 'asc',
+    createdAt = createdAtSort,
   }: {
     page?: number,
     title?: string,
-    createdAt?: 'asc' | 'desc'
+    createdAt?: TSort
   }) => {
     page = page ?? (await paginatedTasksPromise).page;
     startTransition(() =>
@@ -28,7 +29,7 @@ export const useRepeatTasks = (userId: string, search: string) => {
         })
       )
     );
-  }
+  };
 
   const tasksPromise = useMemo(
     () => paginatedTasksPromise.then((res) => res.data),
@@ -63,5 +64,5 @@ export const useRepeatTasks = (userId: string, search: string) => {
     handleChangePage,
     deleteTaskAction: repeatDeleteTaskActionWrapper({ refetchTasks: () => refetchTasks({}), setDeletedOptimisticTasksIds }),
     createTaskAction: repeatCreateTaskActionWrapper({ refetchTasks: () => refetchTasks({}), userId, setCreatedOptimisticTasks })
-  }
-}
+  };
+};
