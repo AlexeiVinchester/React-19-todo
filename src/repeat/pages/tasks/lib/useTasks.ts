@@ -9,12 +9,27 @@ export const useRepeatTasks = (userId: string) => {
     filters: { userId, },
   }));
 
-  const refetchTasks = () =>
+  const refetchTasks = async ({
+    page,
+    title = '',
+    createdAt = 'asc'
+  }: {
+    page?: number,
+    title?: string,
+    userId?: string,
+    createdAt?: 'asc' | 'desc'
+  }) => {
+    page = page ?? (await paginatedTasksPromise).page;
     startTransition(() =>
       setPaginatedTasksPromise(
-        repeatFetchTasks({ filters: { userId } })
+        repeatFetchTasks({
+          filters: { userId, title },
+          page,
+          sort: { createdAt }
+        })
       )
     );
+  }
 
   const tasksPromise = useMemo(
     () => paginatedTasksPromise.then((res) => res.data),
@@ -37,13 +52,17 @@ export const useRepeatTasks = (userId: string) => {
     return tasks.concat(createdOptimisticTasks).filter(task => !deletedOptimisticTasksIds.includes(task.id))
   };
 
+  const handleChangePage = (page: number) => {
+    refetchTasks({ page });
+  };
+
   return {
     tasksPromise,
     useRepeatTasksList,
     paginatedTasksPromise,
-    setPaginatedTasksPromise,
     refetchTasks,
-    deleteTaskAction: repeatDeleteTaskActionWrapper({ refetchTasks, setDeletedOptimisticTasksIds }),
-    createTaskAction: repeatCreateTaskActionWrapper({ refetchTasks, userId, setCreatedOptimisticTasks })
+    handleChangePage,
+    deleteTaskAction: repeatDeleteTaskActionWrapper({ refetchTasks: () => refetchTasks({}), setDeletedOptimisticTasksIds }),
+    createTaskAction: repeatCreateTaskActionWrapper({ refetchTasks: () => refetchTasks({}), userId, setCreatedOptimisticTasks })
   }
 }
