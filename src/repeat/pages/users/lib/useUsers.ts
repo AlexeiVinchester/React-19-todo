@@ -1,16 +1,12 @@
-import { useState, startTransition, useOptimistic, use } from "react";
-import { repeatFetchUsers } from "../api/api";
+import { useOptimistic, use } from "react";
 import { repeatDeleteUserActionWrapper } from "./deleteUser.action";
 import { repeatCreateUserActionWrapper } from "./createUser.action";
 import { TRepeatUser } from "../model/user.type";
+import { useRepeatUsersGlobal } from "../../../entities/UsersContext/useRepeatUsersGlobal";
 
-const defaultUsersPromise = repeatFetchUsers();
 
 export const useRepeatUsers = () => {
-  const [usersPromise, setUsersPromise] = useState(defaultUsersPromise);
-  const refetchUsers = () => {
-    startTransition(() => setUsersPromise(repeatFetchUsers()));
-  }
+  const { usersPromise, refetchUsers } = useRepeatUsersGlobal()
 
   const [createdOptimisticUsers, setCreatedOptimisticUsers] = useOptimistic(
     [] as TRepeatUser[],
@@ -26,7 +22,7 @@ export const useRepeatUsers = () => {
     const users = use(usersPromise);
     return users.concat(createdOptimisticUsers).filter(user => !deletedIds.includes(user.id));
   };
-  
+
   return {
     usersPromise,
     deleteUserAction: repeatDeleteUserActionWrapper({ refetchUsers, setDeleteOptimisticId }),

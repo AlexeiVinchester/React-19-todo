@@ -4,19 +4,18 @@ import { repeatCreateTaskActionWrapper } from "./createTask.action";
 import { repeatDeleteTaskActionWrapper } from "./deleteTask.action";
 import { TRepeatTask } from "../model/task.type";
 
-export const useRepeatTasks = (userId: string) => {
+export const useRepeatTasks = (userId: string, search: string) => {
   const [paginatedTasksPromise, setPaginatedTasksPromise] = useState(() => repeatFetchTasks({
-    filters: { userId, },
+    filters: { userId, title: search},
   }));
 
   const refetchTasks = async ({
     page,
-    title = '',
-    createdAt = 'asc'
+    title = search,
+    createdAt = 'asc',
   }: {
     page?: number,
     title?: string,
-    userId?: string,
     createdAt?: 'asc' | 'desc'
   }) => {
     page = page ?? (await paginatedTasksPromise).page;

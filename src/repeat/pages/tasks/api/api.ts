@@ -33,7 +33,7 @@ export const repeatFetchTasks = async (
 ) => {
   const response = await fetch(
     `http://localhost:3001/tasks?_page=${page}&_per_page=${per_page}&_sort=${sort.createdAt === "asc" ? "createdAt" : "-createdAt"
-    }&userId=${filters?.userId}`
+    }&userId=${filters?.userId}&title=${filters?.title}`
   );
 
   const data = await response.json();
